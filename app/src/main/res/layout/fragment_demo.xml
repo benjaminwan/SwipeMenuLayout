@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp"
+    app:divider="?android:attr/listDivider"
+    app:showDividers="middle">
+
+    <com.airbnb.epoxy.EpoxyRecyclerView
+        android:id="@+id/demoRv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="1dp"
+        android:fadeScrollbars="false"
+        android:scrollbarSize="2dp"
+        android:scrollbarThumbVertical="@color/material_grey_500"
+        android:scrollbars="vertical" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

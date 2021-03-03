@@ -1,0 +1,3 @@
+include ':SwipeMenuLayout'
+include ':app'
+rootProject.name = "EpoxySwipeMenuLayout"
