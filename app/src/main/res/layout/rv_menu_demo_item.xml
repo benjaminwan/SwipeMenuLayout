@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.benjaminwan.swipemenulayout.SwipeMenuLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/swipeMenuLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:id="@+id/contentLayout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/bg_grey5_to_grey7"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/leftIv"
+            android:layout_width="12dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_green5_to_green7"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_right"
+            app:tint="@color/selector_white_to_grey5" />
+
+        <TextView
+            android:id="@+id/demoTv"
+            android:layout_width="0dp"
+            android:layout_height="50dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <ImageView
+            android:id="@+id/rightIv"
+            android:layout_width="12dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/bg_blue5_to_blue7"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_left"
+            app:tint="@color/selector_white_to_grey5" />
+    </LinearLayout>
+</com.benjaminwan.swipemenulayout.SwipeMenuLayout>

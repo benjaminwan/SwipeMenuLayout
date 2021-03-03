@@ -2,10 +2,25 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/demoFragment">
+    app:startDestination="@id/mainFragment">
 
     <fragment
-        android:id="@+id/demoFragment"
-        android:name="com.benjaminwan.epoxyswipedemo.ui.DemoFragment"
-        android:label="DemoFragment" />
+        android:id="@+id/mainFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.MainFragment"
+        android:label="MainFragment" />
+
+    <fragment
+        android:id="@+id/simpleFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.SimpleFragment"
+        android:label="SimpleFragment" />
+
+    <fragment
+        android:id="@+id/recyclerViewFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.RecyclerViewFragment"
+        android:label="RecyclerViewFragment" />
+
+    <fragment
+        android:id="@+id/recyclerViewTypesFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.RecyclerViewTypesFragment"
+        android:label="RecyclerViewTypesFragment" />
 </navigation>

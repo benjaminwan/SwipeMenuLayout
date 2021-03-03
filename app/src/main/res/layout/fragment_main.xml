@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="2dp"
+    app:divider="?android:attr/listDivider"
+    app:showDividers="middle">
+
+    <Button
+        android:id="@+id/simpleBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Simple Examples" />
+
+    <Button
+        android:id="@+id/recyclerViewBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RecyclerView Examples" />
+
+    <Button
+        android:id="@+id/recyclerViewTypesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RecyclerView + Types Examples" />
+
+</androidx.appcompat.widget.LinearLayoutCompat>

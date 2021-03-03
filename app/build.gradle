@@ -1,11 +1,19 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
 }
 
 android {
+    signingConfigs {
+        release {
+            keyAlias 'swipe_menu'
+            keyPassword 'benjaminwan'
+            storeFile file('../appkey/swipe_menu.keystore')
+            storePassword 'benjaminwan'
+        }
+    }
+
     compileSdkVersion 30
     buildToolsVersion "30.0.3"
 
@@ -13,15 +21,20 @@ android {
         applicationId "com.benjaminwan.epoxyswipedemo"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode project_versionCode
+        versionName project_versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+        release {
+            signingConfig signingConfigs.release
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -32,12 +45,24 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    buildFeatures {
+        viewBinding true
+    }
+    applicationVariants.all {
+        variant ->
+            variant.outputs.all {
+                outputFileName = "${rootProject.name}-${defaultConfig.versionName}-${variant.buildType.name}.apk"
+            }
+    }
 }
 
 dependencies {
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.1'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //LeakCanary
+    debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.6'
 
     //Kotlin
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -63,4 +88,7 @@ dependencies {
     def navigation_version = "2.3.1"
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
+
+    implementation project(':SwipeMenuLayout')
+    implementation project(':SwipeMenuLayout-Helper')
 }

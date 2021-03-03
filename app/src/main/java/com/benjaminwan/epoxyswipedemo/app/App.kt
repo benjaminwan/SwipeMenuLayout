@@ -10,8 +10,13 @@ import com.orhanobut.logger.Logger
 import com.orhanobut.logger.PrettyFormatStrategy
 
 class App : Application() {
+    companion object {
+        lateinit var instance: App
+    }
+
     override fun onCreate() {
         super.onCreate()
+        instance = this
         Mavericks.initialize(this)
         initLogger()
     }

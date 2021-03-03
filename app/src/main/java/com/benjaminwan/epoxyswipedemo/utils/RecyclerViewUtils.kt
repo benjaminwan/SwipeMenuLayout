@@ -9,7 +9,7 @@ import android.view.View
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
-private fun Context.dp2px(value: Int): Int {
+fun Context.dp2px(value: Int): Int {
     val scale = resources.displayMetrics.density
     return (value.toFloat() * scale + 0.5f).toInt()
 }

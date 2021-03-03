@@ -1,3 +1,5 @@
 <resources>
-    <string name="app_name">EpoxySwipeMenuLayout</string>
+    <string name="app_name">SwipeMenuLayout</string>
+    <string name="left_delete_title">Left Delete</string>
+    <string name="right_delete_title">Right Delete</string>
 </resources>
