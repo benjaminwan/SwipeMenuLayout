@@ -1,0 +1,136 @@
+name: Android CI
+
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  first-job:
+    runs-on: ubuntu-latest
+    steps:
+      # 检出代码
+      - uses: actions/checkout@v2
+
+      # 设置JDK版本
+      - name: set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      # 缓存依赖项
+      # https://docs.github.com/cn/actions/guides/building-and-testing-java-with-gradle#caching-dependencies
+      - name: Cache Gradle packages
+        uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
+      # Assemble Release apk
+      - name: Build with Gradle
+        run: chmod +x gradlew &&./gradlew assembleRelease
+
+      # 清除部分Gradle缓存
+      - name: Cleanup Gradle Cache
+        run: |
+          rm -f ~/.gradle/caches/modules-2/modules-2.lock
+          rm -f ~/.gradle/caches/modules-2/gc.properties
+
+      # 上传apk 到action
+      # https://github.com/marketplace/actions/upload-a-build-artifact
+      - name: Upload APK/AAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: outputs
+          path: |
+            app/build/outputs/apk/release/*.apk
+            SwipeMenuLayout/build/outputs/aar/*-release.aar
+            SwipeMenuLayout-Helper/build/outputs/aar/*-release.aar
+            SwipeMenuLayout-EpoxyHelper/build/outputs/aar/*-release.aar
+
+      # 获取SwipeMenuLayout aar路径
+      - name: Get SwipeMenuLayout aar path
+        id: SwipeMenuLayout-path
+        run: |
+          path=$(find SwipeMenuLayout/build/outputs/aar -name '*release.aar' -type f | head -1)
+          echo "::set-output name=path::$path"
+
+      # 获取SwipeMenuLayout-Helper aar路径
+      - name: Get SwipeMenuLayout-Helper aar path
+        id: SwipeMenuLayout-Helper-path
+        run: |
+          path=$(find SwipeMenuLayout-Helper/build/outputs/aar -name '*release.aar' -type f | head -1)
+          echo "::set-output name=path::$path"
+
+      # 获取SwipeMenuLayout-EpoxyHelper aar路径
+      - name: Get SwipeMenuLayout-EpoxyHelper aar path
+        id: SwipeMenuLayout-EpoxyHelper-path
+        run: |
+          path=$(find SwipeMenuLayout-EpoxyHelper/build/outputs/aar -name '*release.aar' -type f | head -1)
+          echo "::set-output name=path::$path"
+
+      # 获取apk路径
+      - name: Get apk path
+        id: apk-path
+        run: |
+          path=$(find app/build/outputs/apk/release -name '*.apk' -type f | head -1)
+          echo "::set-output name=path::$path"
+
+      # 获取apk版本号
+      - name: Get apk info
+        id: apk-info
+        uses: hkusu/apk-info-action@v1
+        with:
+          apk-path: ${{ steps.apk-path.outputs.path }}
+
+      #获取指定时区的时间
+      - name: Get Time
+        id: time
+        uses: JantHsueh/get-time-action@master
+        with:
+          timeZone: 8
+
+      #获取git log
+      - name: Get git log
+        id: git_log
+        uses: JantHsueh/get-git-log-action@master
+        with:
+          tag: release
+
+      # 显示信息
+      - name: Show info
+        if: always()
+        run: |
+          echo '${{ steps.SwipeMenuLayout-path.outputs.path }}' # SwipeMenuLayout aar路径
+          echo '${{ steps.SwipeMenuLayout-Helper-path.outputs.path }}' # SwipeMenuLayout-Helper aar路径
+          echo '${{ steps.SwipeMenuLayout-EpoxyHelper-path.outputs.path }}' # SwipeMenuLayout-EpoxyHelper aar路径
+          echo '${{ steps.apk-path.outputs.path }}' # apk路径
+          echo '${{ steps.apk-info.outputs.result }}' # get apk info success or failure
+          echo '${{ steps.time.outputs.result }}' # time
+          echo '${{ steps.apk-info.outputs.application-name }}'
+          echo '${{ steps.apk-info.outputs.application-id }}'
+          echo '${{ steps.apk-info.outputs.version-code }}'
+          echo '${{ steps.apk-info.outputs.version-name }}'
+          echo '${{ steps.apk-info.outputs.min-sdk-version }}'
+          echo '${{ steps.apk-info.outputs.target-sdk-version }}'
+          echo '${{ steps.apk-info.outputs.compile-sdk-version }}'
+          echo '${{ steps.apk-info.outputs.uses-permissions }}'
+          echo '${{ steps.apk-info.outputs.debuggable }}'
+          echo '${{ steps.apk-info.outputs.allow-backup }}'
+          echo '${{ steps.apk-info.outputs.supports-rtl }}'
+          echo '${{ steps.apk-info.outputs.file-size }}'
+          echo '${{ steps.apk-info.outputs.readable-file-size }}'
+
+      # 向钉钉发送消息
+      - name: dingtalk
+        uses: JantHsueh/webrequest-action@master
+        with:
+          url: ${{ secrets.DINGTALK_WEBHOOK }}
+          method: POST
+          payload: '{"msgtype": "text", "text": {"content": "版本更新: SwipeMenuLayout-版本号: ${{ steps.apk-info.outputs.version-name }} \n 距上个正式版的更新记录: \n${{ steps.git_log.outputs.log }}"}}'
+          headers: '{"Content-Type": "application/json"}'
