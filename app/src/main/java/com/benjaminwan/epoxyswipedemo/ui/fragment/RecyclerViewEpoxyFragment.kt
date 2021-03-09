@@ -1,4 +1,4 @@
-package com.benjaminwan.epoxyswipedemo.ui
+package com.benjaminwan.epoxyswipedemo.ui.fragment
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -10,48 +10,25 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.benjaminwan.epoxyswipedemo.R
 import com.benjaminwan.epoxyswipedemo.databinding.FragmentRecyclerviewBinding
+import com.benjaminwan.epoxyswipedemo.itemviews.MenuDemoItemViewModel_
 import com.benjaminwan.epoxyswipedemo.itemviews.menuDemoItemView
 import com.benjaminwan.epoxyswipedemo.menu.leftMenus
 import com.benjaminwan.epoxyswipedemo.menu.rightMenus
 import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemDragListener
 import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemHelperCallBack
+import com.benjaminwan.epoxyswipedemo.ui.viewmodel.RecyclerViewEpoxyViewModel
 import com.benjaminwan.epoxyswipedemo.utils.*
 import com.benjaminwan.swipemenulayout.SwipeMenuItem
+import com.benjaminwan.swipemenulayout.epoxyhelper.EpoxyMenuTouchHelper
 import com.benjaminwan.swipemenulayout.helper.MenuItemTouchHelper
 import com.orhanobut.logger.Logger
 
-class RecyclerViewFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
+class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
     Fragment(contentLayoutId), MavericksView {
 
     private val binding: FragmentRecyclerviewBinding by viewBinding()
-    private val demoVM by activityViewModel(RecyclerViewViewModel::class)
+    private val demoVM by activityViewModel(RecyclerViewEpoxyViewModel::class)
     private val epoxyController by lazy { epoxyController() }
-
-    private val itemTouchHelper = MenuItemTouchHelper(
-        MenuItemHelperCallBack(
-            object :
-                MenuItemDragListener {
-                var objectAnimator: ObjectAnimator? = null
-                override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-                    withState(demoVM) {
-                        if (fromPosition in it.demos.indices && toPosition in it.demos.indices)
-                            demoVM.swap(fromPosition, toPosition)
-                    }
-                }
-
-                override fun onDragStarted(itemView: View?, adapterPosition: Int) {
-                    Logger.i("onDragStarted")
-                    itemView ?: return
-                    objectAnimator = itemView.shakeInfinite()
-                }
-
-                override fun onDragReleased() {
-                    Logger.i("onDragReleased")
-                    objectAnimator?.cancel()
-                }
-
-            })
-    )
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -74,7 +51,39 @@ class RecyclerViewFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_r
         binding.demoRv.setItemDecoration(4, 4, 4, 4)
         binding.demoRv.setController(epoxyController)
         //拖拽事件(Drag and drop event)
-        itemTouchHelper.attachToRecyclerView(binding.demoRv)
+        EpoxyMenuTouchHelper.initDragging(epoxyController)
+            .withRecyclerView(binding.demoRv)
+            .forVerticalList()
+            .withTarget(MenuDemoItemViewModel_::class.java)
+            .andCallbacks(object : EpoxyMenuTouchHelper.DragCallbacks<MenuDemoItemViewModel_>() {
+                var objectAnimator: ObjectAnimator? = null
+
+                override fun onModelMoved(
+                    fromPosition: Int,
+                    toPosition: Int,
+                    modelBeingMoved: MenuDemoItemViewModel_?,
+                    itemView: View?
+                ) {
+                    withState(demoVM) {
+                        demoVM.swap(fromPosition, toPosition)
+                    }
+                }
+
+                override fun onDragStarted(
+                    model: MenuDemoItemViewModel_?,
+                    itemView: View?,
+                    adapterPosition: Int
+                ) {
+                    super.onDragStarted(model, itemView, adapterPosition)
+                    itemView ?: return
+                    objectAnimator = itemView.shakeInfinite()
+                }
+
+                override fun onDragReleased(model: MenuDemoItemViewModel_?, itemView: View?) {
+                    super.onDragReleased(model, itemView)
+                    objectAnimator?.cancel()
+                }
+            })
     }
 
     override fun invalidate() = withState(demoVM) { state ->

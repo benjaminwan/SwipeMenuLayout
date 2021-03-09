@@ -1,4 +1,4 @@
-package com.benjaminwan.epoxyswipedemo.ui
+package com.benjaminwan.epoxyswipedemo.ui.viewmodel
 
 import android.content.Context
 import com.airbnb.mvrx.MavericksViewModel
@@ -7,10 +7,10 @@ import com.airbnb.mvrx.ViewModelContext
 import com.benjaminwan.epoxyswipedemo.utils.copyRemove
 import com.benjaminwan.epoxyswipedemo.utils.copySwap
 
-class RecyclerViewViewModel(
-    initialState: RecyclerViewState,
+class RecyclerViewEpoxyViewModel(
+    initialState: RecyclerViewEpoxyState,
     private val context: Context
-) : MavericksViewModel<RecyclerViewState>(initialState) {
+) : MavericksViewModel<RecyclerViewEpoxyState>(initialState) {
 
     init {
 
@@ -51,13 +51,13 @@ class RecyclerViewViewModel(
         super.onCleared()
     }
 
-    companion object : MavericksViewModelFactory<RecyclerViewViewModel, RecyclerViewState> {
+    companion object : MavericksViewModelFactory<RecyclerViewEpoxyViewModel, RecyclerViewEpoxyState> {
         override fun create(
             viewModelContext: ViewModelContext,
-            state: RecyclerViewState
-        ): RecyclerViewViewModel {
+            state: RecyclerViewEpoxyState
+        ): RecyclerViewEpoxyViewModel {
             val context = viewModelContext.activity.applicationContext
-            return RecyclerViewViewModel(state, context)
+            return RecyclerViewEpoxyViewModel(state, context)
         }
     }
 

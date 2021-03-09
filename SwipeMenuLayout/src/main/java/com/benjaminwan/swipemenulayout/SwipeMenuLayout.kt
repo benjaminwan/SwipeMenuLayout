@@ -391,7 +391,7 @@ open class SwipeMenuLayout @JvmOverloads constructor(
                 scroller.startScroll(scrollX, 0, leftMenuView.left - scrollX, 0)
                 lastInstance = WeakReference(this)
                 if (!isQuiet) {
-                    onLeftMenuOpenListener.forEach {
+                    onMenuLeftOpenedListener.forEach {
                         it?.invoke(this)
                     }
                 }
@@ -406,7 +406,7 @@ open class SwipeMenuLayout @JvmOverloads constructor(
                 )
                 lastInstance = WeakReference(this)
                 if (!isQuiet) {
-                    onRightMenuOpenListener.forEach {
+                    onMenuRightOpenedListener.forEach {
                         it?.invoke(this)
                     }
                 }
@@ -499,33 +499,33 @@ open class SwipeMenuLayout @JvmOverloads constructor(
         onMenuClosedListener.clear()
     }
 
-    var onLeftMenuOpenListener: MutableList<OnLeftMenuOpenedListener> = mutableListOf()
-    fun addOnLeftMenuOpenListener(listener: OnLeftMenuOpenedListener) {
-        onLeftMenuOpenListener.add(listener)
+    var onMenuLeftOpenedListener: MutableList<OnMenuLeftOpenedListener> = mutableListOf()
+    fun addOnMenuLeftOpenedListener(listener: OnMenuLeftOpenedListener) {
+        onMenuLeftOpenedListener.add(listener)
     }
 
-    fun removeOnLeftMenuOpenListener(listener: OnLeftMenuOpenedListener) {
-        onLeftMenuOpenListener.remove(listener)
+    fun removeOnMenuLeftOpenedListener(listener: OnMenuLeftOpenedListener) {
+        onMenuLeftOpenedListener.remove(listener)
     }
 
-    fun clearOnLeftMenuOpenListener() {
-        onLeftMenuOpenListener.clear()
+    fun clearOnMenuLeftOpenedListener() {
+        onMenuLeftOpenedListener.clear()
     }
 
-    var onRightMenuOpenListener: MutableList<OnRightMenuOpenListener> = mutableListOf()
-    fun addOnRightMenuOpenListener(listener: OnRightMenuOpenListener) {
-        onRightMenuOpenListener.add(listener)
+    var onMenuRightOpenedListener: MutableList<OnMenuRightOpenedListener> = mutableListOf()
+    fun addOnMenuRightOpenedListener(listener: OnMenuRightOpenedListener) {
+        onMenuRightOpenedListener.add(listener)
     }
 
-    fun removeOnRightMenuOpenListener(listener: OnRightMenuOpenListener) {
-        onRightMenuOpenListener.remove(listener)
+    fun removeOnMenuRightOpenedListener(listener: OnMenuRightOpenedListener) {
+        onMenuRightOpenedListener.remove(listener)
     }
 
-    fun clearOnRightMenuOpenListener() {
-        onRightMenuOpenListener.clear()
+    fun clearOnMenuRightOpenedListener() {
+        onMenuRightOpenedListener.clear()
     }
 
-    fun close() {
+    private fun close() {
         handlerSwipeMenu(CLOSE)
     }
 

@@ -1,4 +1,4 @@
-package com.benjaminwan.epoxyswipedemo.ui
+package com.benjaminwan.epoxyswipedemo.ui.fragment
 
 import android.animation.ObjectAnimator
 import android.os.Bundle
@@ -10,22 +10,21 @@ import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
 import com.benjaminwan.epoxyswipedemo.R
 import com.benjaminwan.epoxyswipedemo.databinding.FragmentRecyclerviewBinding
+import com.benjaminwan.epoxyswipedemo.itemviews.MenuDemoItemViewModel_
 import com.benjaminwan.epoxyswipedemo.itemviews.menuDemoItemView
 import com.benjaminwan.epoxyswipedemo.itemviews.testItemView
 import com.benjaminwan.epoxyswipedemo.menu.leftMenus
 import com.benjaminwan.epoxyswipedemo.menu.rightMenus
-import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemHelperCallBack
-import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemDragListener
+import com.benjaminwan.epoxyswipedemo.ui.viewmodel.RecyclerViewEpoxyViewModel
+import com.benjaminwan.swipemenulayout.epoxyhelper.EpoxyMenuTouchHelper
 import com.benjaminwan.epoxyswipedemo.utils.*
 import com.benjaminwan.swipemenulayout.SwipeMenuItem
-import com.benjaminwan.swipemenulayout.helper.MenuItemTouchHelper
-import com.orhanobut.logger.Logger
 
-class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
+class RecyclerViewEpoxyTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
     Fragment(contentLayoutId), MavericksView {
 
     private val binding: FragmentRecyclerviewBinding by viewBinding()
-    private val demoVM by activityViewModel(RecyclerViewViewModel::class)
+    private val demoVM by activityViewModel(RecyclerViewEpoxyViewModel::class)
     private val epoxyController by lazy { epoxyController() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,45 +49,17 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         binding.demoRv.setItemDecoration(4, 4, 4, 4)
         binding.demoRv.setController(epoxyController)
         //拖拽事件(Drag and drop event)
-        val itemTouchHelper =
-            MenuItemTouchHelper(
-                MenuItemHelperCallBack(
-                    object :
-                        MenuItemDragListener {
-                        var objectAnimator: ObjectAnimator? = null
-                        override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-                            withState(demoVM) {
-                                val fromPos = fromPosition - 6
-                                val toPos = toPosition - 6
-                                if (fromPos in it.demos.indices && toPos in it.demos.indices)
-                                    demoVM.swap(fromPos, toPos)
-                            }
-                        }
-
-                        override fun onDragStarted(itemView: View?, adapterPosition: Int) {
-                            Logger.i("onDragStarted")
-                            itemView ?: return
-                            objectAnimator = itemView.shakeInfinite()
-                        }
-
-                        override fun onDragReleased() {
-                            Logger.i("onDragReleased")
-                            objectAnimator?.cancel()
-                        }
-
-                    })
-            )
-        itemTouchHelper.attachToRecyclerView(binding.demoRv)
-
-        /*EpoxyTouchHelper.initDragging(epoxyController)
-            .withRecyclerView(demoRv)
+        EpoxyMenuTouchHelper.initDragging(epoxyController)
+            .withRecyclerView(binding.demoRv)
             .forVerticalList()
-            .withTarget(DemoItemViewModel_::class.java)
-            .andCallbacks(object : EpoxyTouchHelper.DragCallbacks<DemoItemViewModel_>() {
+            .withTarget(MenuDemoItemViewModel_::class.java)
+            .andCallbacks(object : EpoxyMenuTouchHelper.DragCallbacks<MenuDemoItemViewModel_>() {
+                var objectAnimator: ObjectAnimator? = null
+
                 override fun onModelMoved(
                     fromPosition: Int,
                     toPosition: Int,
-                    modelBeingMoved: DemoItemViewModel_?,
+                    modelBeingMoved: MenuDemoItemViewModel_?,
                     itemView: View?
                 ) {
                     //因为在这个范例里，RecyclerView顶部放了6个固定的menuDemoItemView
@@ -99,8 +70,23 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
                         if (fromPos in it.demos.indices && toPos in it.demos.indices)
                             demoVM.swap(fromPos, toPos)
                     }
-                }*/
+                }
 
+                override fun onDragStarted(
+                    model: MenuDemoItemViewModel_?,
+                    itemView: View?,
+                    adapterPosition: Int
+                ) {
+                    super.onDragStarted(model, itemView, adapterPosition)
+                    itemView ?: return
+                    objectAnimator = itemView.shakeInfinite()
+                }
+
+                override fun onDragReleased(model: MenuDemoItemViewModel_?, itemView: View?) {
+                    super.onDragReleased(model, itemView)
+                    objectAnimator?.cancel()
+                }
+            })
     }
 
     override fun invalidate() = withState(demoVM) { state ->
@@ -111,7 +97,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_left")
             content("Left Menu")
-            indexContent("0")
             onClickListener { swipeMenuLayout, view ->
                 showToast("Click Item: Left Menu")
             }
@@ -124,7 +109,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_open_left")
             content("Click to Open/Close Left Menu")
-            indexContent("1")
             onClickListener { swipeMenuLayout, view ->
                 if (swipeMenuLayout.isClosed) {
                     swipeMenuLayout.openLeftMenu()
@@ -147,7 +131,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_right")
             content("Right Menu")
-            indexContent("2")
             onClickListener { swipeMenuLayout, view ->
                 showToast("Click Item: Right Menu")
             }
@@ -160,7 +143,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_open_right")
             content("Click to Open/Close Right Menu")
-            indexContent("3")
             onClickListener { swipeMenuLayout, view ->
                 if (swipeMenuLayout.isClosed) {
                     swipeMenuLayout.openRightMenu()
@@ -183,7 +165,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_open_Threshold8")
             content("Menu Open Threshold:0.8")
-            indexContent("4")
             menuOpenThreshold(0.8f)
             leftMenu(leftMenus)
             rightMenu(rightMenus)
@@ -191,7 +172,6 @@ class RecyclerViewTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
         testItemView {
             id("demo_open_Threshold2")
             content("Menu Open Threshold:0.2")
-            indexContent("5")
             menuOpenThreshold(0.2f)
             leftMenu(leftMenus)
             rightMenu(rightMenus)

@@ -24,7 +24,6 @@ class TestItemView @JvmOverloads constructor(
     private val swipeMenuLayout by lazy { findViewById<SwipeMenuLayout>(R.id.swipeMenuLayout) }
     private val contentLayout: LinearLayout by lazy { findViewById(R.id.contentLayout) }
     private val contentTv by lazy { findViewById<TextView>(R.id.contentTv) }
-    private val indexTv by lazy { findViewById<TextView>(R.id.indexTv) }
     private val leftIv by lazy { findViewById<ImageView>(R.id.leftIv) }
     private val rightIv by lazy { findViewById<ImageView>(R.id.rightIv) }
 
@@ -35,11 +34,6 @@ class TestItemView @JvmOverloads constructor(
     @TextProp
     fun setContent(content: CharSequence) {
         contentTv.text = content
-    }
-
-    @TextProp
-    fun setIndexContent(content: CharSequence) {
-        indexTv.text = content
     }
 
     @ModelProp
@@ -77,8 +71,8 @@ class TestItemView @JvmOverloads constructor(
     }
 
     @CallbackProp
-    fun onRightMenuOpenedListener(listener: OnRightMenuOpenListener) {
-        swipeMenuLayout.addOnRightMenuOpenListener(listener)
+    fun onRightMenuOpenedListener(listener: OnMenuRightOpenedListener) {
+        swipeMenuLayout.addOnMenuRightOpenedListener(listener)
     }
 
     @ModelProp
@@ -103,8 +97,8 @@ class TestItemView @JvmOverloads constructor(
     }
 
     @CallbackProp
-    fun onLeftMenuOpenedListener(listener: OnLeftMenuOpenedListener) {
-        swipeMenuLayout.addOnLeftMenuOpenListener(listener)
+    fun onLeftMenuOpenedListener(listener: OnMenuLeftOpenedListener) {
+        swipeMenuLayout.addOnMenuLeftOpenedListener(listener)
     }
 
     @CallbackProp

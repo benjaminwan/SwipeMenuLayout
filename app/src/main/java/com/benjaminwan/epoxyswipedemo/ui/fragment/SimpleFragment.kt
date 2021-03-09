@@ -1,4 +1,4 @@
-package com.benjaminwan.epoxyswipedemo.ui
+package com.benjaminwan.epoxyswipedemo.ui.fragment
 
 import android.os.Bundle
 import android.view.View
@@ -31,10 +31,10 @@ class SimpleFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_simple)
             binding.leftIv.setImageResource(R.drawable.ic_right)
             binding.rightIv.setImageResource(R.drawable.ic_left)
         }
-        binding.simpleSwipeLayout.addOnLeftMenuOpenListener {
+        binding.simpleSwipeLayout.addOnMenuLeftOpenedListener {
             binding.leftIv.setImageResource(R.drawable.ic_left)
         }
-        binding.simpleSwipeLayout.addOnRightMenuOpenListener {
+        binding.simpleSwipeLayout.addOnMenuRightOpenedListener {
             binding.rightIv.setImageResource(R.drawable.ic_right)
         }
         binding.simpleSwipeLayout.leftMenuView.setOnMenuItemClickListener {

@@ -23,11 +23,14 @@ class MainFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_main) :
         binding.simpleBtn.setOnClickListener {
             findNavController().navigate(R.id.simpleFragment)
         }
-        binding.recyclerViewBtn.setOnClickListener {
-            findNavController().navigate(R.id.recyclerViewFragment)
+        binding.recyclerViewAdapterBtn.setOnClickListener {
+            findNavController().navigate(R.id.recyclerViewAdapterFragment)
         }
-        binding.recyclerViewTypesBtn.setOnClickListener {
-            findNavController().navigate(R.id.recyclerViewTypesFragment)
+        binding.recyclerViewEpoxyBtn.setOnClickListener {
+            findNavController().navigate(R.id.recyclerViewEpoxyFragment)
+        }
+        binding.recyclerViewEpoxyTypesBtn.setOnClickListener {
+            findNavController().navigate(R.id.recyclerViewEpoxyTypesFragment)
         }
 
     }

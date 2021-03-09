@@ -31,13 +31,8 @@ open class SwipeMenuView @JvmOverloads constructor(
     private val SwipeMenuItem.height2Px
         get() = if (height > 0) dp2px(height) else height
 
-    fun setOnMenuItemClickListener(listener: OnMenuItemClickListener?) {
+    fun setOnMenuItemClickListener(listener: OnMenuItemClickListener) {
         mItemClickListener = listener
-    }
-
-    fun clearMenu() {
-        removeAllViews()
-        mItemClickListener = null
     }
 
     fun createMenu(swipeMenu: List<SwipeMenuItem>?) {

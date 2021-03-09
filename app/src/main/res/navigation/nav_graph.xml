@@ -11,16 +11,21 @@
 
     <fragment
         android:id="@+id/simpleFragment"
-        android:name="com.benjaminwan.epoxyswipedemo.ui.SimpleFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.fragment.SimpleFragment"
         android:label="SimpleFragment" />
 
     <fragment
-        android:id="@+id/recyclerViewFragment"
-        android:name="com.benjaminwan.epoxyswipedemo.ui.RecyclerViewFragment"
-        android:label="RecyclerViewFragment" />
+        android:id="@+id/recyclerViewEpoxyFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.fragment.RecyclerViewEpoxyFragment"
+        android:label="RecyclerViewEpoxyFragment" />
 
     <fragment
-        android:id="@+id/recyclerViewTypesFragment"
-        android:name="com.benjaminwan.epoxyswipedemo.ui.RecyclerViewTypesFragment"
-        android:label="RecyclerViewTypesFragment" />
+        android:id="@+id/recyclerViewEpoxyTypesFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.fragment.RecyclerViewEpoxyTypesFragment"
+        android:label="RecyclerViewEpoxyTypesFragment" />
+
+    <fragment
+        android:id="@+id/recyclerViewAdapterFragment"
+        android:name="com.benjaminwan.epoxyswipedemo.ui.fragment.RecyclerViewAdapterFragment"
+        android:label="RecyclerViewAdapterFragment" />
 </navigation>

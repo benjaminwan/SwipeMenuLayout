@@ -14,13 +14,12 @@ android {
         }
     }
 
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdkVersion compile_SdkVersion
 
     defaultConfig {
         applicationId "com.benjaminwan.epoxyswipedemo"
-        minSdkVersion 21
-        targetSdkVersion 30
+        minSdkVersion min_SdkVersion
+        targetSdkVersion target_SdkVersion
         versionCode project_versionCode
         versionName project_versionName
 
@@ -91,4 +90,5 @@ dependencies {
 
     implementation project(':SwipeMenuLayout')
     implementation project(':SwipeMenuLayout-Helper')
+    implementation project(':SwipeMenuLayout-EpoxyHelper')
 }

@@ -15,15 +15,21 @@
         android:text="Simple Examples" />
 
     <Button
-        android:id="@+id/recyclerViewBtn"
+        android:id="@+id/recyclerViewAdapterBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RecyclerView Examples" />
+        android:text="RecyclerView+Adapter" />
 
     <Button
-        android:id="@+id/recyclerViewTypesBtn"
+        android:id="@+id/recyclerViewEpoxyBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="RecyclerView + Types Examples" />
+        android:text="RecyclerView+Epoxy" />
+
+    <Button
+        android:id="@+id/recyclerViewEpoxyTypesBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="RecyclerView + Epoxy Types" />
 
 </androidx.appcompat.widget.LinearLayoutCompat>

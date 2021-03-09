@@ -29,14 +29,14 @@ class MenuDemoItemView @JvmOverloads constructor(
 
     init {
         View.inflate(context, R.layout.rv_menu_demo_item, this)
-        swipeMenuLayout.addOnRightMenuOpenListener {
+        swipeMenuLayout.addOnMenuRightOpenedListener {
             rightIv.setImageResource(R.drawable.ic_right)
         }
         swipeMenuLayout.addOnMenuClosedListener {
             rightIv.setImageResource(R.drawable.ic_left)
             leftIv.setImageResource(R.drawable.ic_right)
         }
-        swipeMenuLayout.addOnLeftMenuOpenListener {
+        swipeMenuLayout.addOnMenuLeftOpenedListener {
             leftIv.setImageResource(R.drawable.ic_left)
         }
     }
@@ -81,8 +81,8 @@ class MenuDemoItemView @JvmOverloads constructor(
     }
 
     @CallbackProp
-    fun onRightMenuOpenedListener(listener: OnRightMenuOpenListener) {
-        swipeMenuLayout.addOnRightMenuOpenListener(listener)
+    fun onRightMenuOpenedListener(listener: OnMenuRightOpenedListener) {
+        swipeMenuLayout.addOnMenuRightOpenedListener(listener)
     }
 
     @ModelProp
@@ -107,8 +107,8 @@ class MenuDemoItemView @JvmOverloads constructor(
     }
 
     @CallbackProp
-    fun onLeftMenuOpenedListener(listener: OnLeftMenuOpenedListener) {
-        swipeMenuLayout.addOnLeftMenuOpenListener(listener)
+    fun onLeftMenuOpenedListener(listener: OnMenuLeftOpenedListener) {
+        swipeMenuLayout.addOnMenuLeftOpenedListener(listener)
     }
 
     @CallbackProp

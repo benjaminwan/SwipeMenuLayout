@@ -2,3 +2,4 @@ rootProject.name = "SwipeMenuLayout"
 include ':app'
 include ':SwipeMenuLayout'
 include ':SwipeMenuLayout-Helper'
+include ':SwipeMenuLayout-EpoxyHelper'
