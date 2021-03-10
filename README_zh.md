@@ -17,7 +17,7 @@ SwipeMenuLayout是一个侧滑菜单控件，支持向左滑动(右侧菜单)或
 ```groovy
 dependencies {
     //Widget
-    implementation project(':SwipeMenuLayout')
+    implementation project(':SwipeMenuLayout-Core')
     //Adapter Helper
     implementation project(':SwipeMenuLayout-Helper')
     //Epoxy Helper
