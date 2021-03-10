@@ -88,7 +88,7 @@ dependencies {
     implementation "androidx.navigation:navigation-fragment-ktx:$navigation_version"
     implementation "androidx.navigation:navigation-ui-ktx:$navigation_version"
 
-    implementation project(':SwipeMenuLayout')
+    implementation project(':SwipeMenuLayout-Core')
     implementation project(':SwipeMenuLayout-Helper')
     implementation project(':SwipeMenuLayout-EpoxyHelper')
 }

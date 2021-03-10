@@ -1,5 +1,5 @@
 rootProject.name = "SwipeMenuLayout"
 include ':app'
-include ':SwipeMenuLayout'
+include ':SwipeMenuLayout-Core'
 include ':SwipeMenuLayout-Helper'
 include ':SwipeMenuLayout-EpoxyHelper'
