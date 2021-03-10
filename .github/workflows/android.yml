@@ -101,12 +101,17 @@ jobs:
       - name: Get git log
         id: git-log
         run: |
-          previousTag=$(git tag | sed -n 'x;$p' )
-          lastTag=$(git tag | sed -n '$p' )
+          previousTag=$(git describe --tags --abbrev=0 `git rev-list --tags --max-count=2` | sed -n 2p)
+          lastTag=$(git describe --tags --abbrev=0 `git rev-list --tags --max-count=2` | sed -n 1p)
           echo "previousTag is $previousTag ~ lastTag is $lastTag"
+          if [[ $previousTag != '' ]] && [[ $lastTag != '' ]]
+          then
           log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
+          else if [[ $lastTag != '' ]]
+          log=$(git log $lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
+          fi
           echo "$log"
-          echo "::set-output name=log::log"
+          echo "::set-output name=log::$log"
 
       # 显示信息
       - name: Show info
@@ -151,9 +156,9 @@ jobs:
         with:
           body: ${{ steps.git-log.outputs.log }}
           files: |
-            ${{ steps.apk-path.outputs.path }} # apk路径
-            ${{ steps.SwipeMenuLayout-path.outputs.path }}  # SwipeMenuLayout aar路径
-            ${{ steps.SwipeMenuLayout-Helper-path.outputs.path }} # SwipeMenuLayout-Helper aar路径
-            ${{ steps.SwipeMenuLayout-EpoxyHelper-path.outputs.path }} # SwipeMenuLayout-EpoxyHelper aar路径
+            ${{ steps.apk-path.outputs.path }}
+            ${{ steps.SwipeMenuLayout-path.outputs.path }}
+            ${{ steps.SwipeMenuLayout-Helper-path.outputs.path }}
+            ${{ steps.SwipeMenuLayout-EpoxyHelper-path.outputs.path }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASE_ACCESS_TOKEN }}
