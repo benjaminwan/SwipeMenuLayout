@@ -13,6 +13,9 @@ jobs:
       # 检出代码
       - uses: actions/checkout@v2
 
+      - name: Unshallow
+        run: git fetch --prune --unshallow
+
       # 设置JDK版本
       - name: set up JDK 1.8
         uses: actions/setup-java@v1
@@ -97,17 +100,11 @@ jobs:
         with:
           timeZone: 8
 
-      # 获取上次Tag
-      # https://github.com/marketplace/actions/previous-git-tag
-      - name: Previous Git Tag
-        id: git-previous-tag
-        uses: timfallmk/previous-git-tag-action@0.0.1
-
       # 获取git log 从 previousTag 到 lastTag
       - name: Get git log
         id: git-log
         run: |
-          previousTag=${{ steps.git-previous-tag.outputs.PREVIOUS_TAG }}
+          previousTag=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
           lastTag=$(git describe --abbrev=0 --tags)
           echo "previousTag:$previousTag ~ lastTag:$lastTag"
           log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
