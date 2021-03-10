@@ -4,8 +4,8 @@ buildscript {
     ext.compile_SdkVersion = 30
     ext.min_SdkVersion = 21
     ext.target_SdkVersion = 30
-    ext.project_versionCode = 1
-    ext.project_versionName = "1.0.0"
+    ext.project_versionCode = 2
+    ext.project_versionName = "1.0.1"
     repositories {
         google()
         jcenter()
