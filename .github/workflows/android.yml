@@ -71,7 +71,7 @@ jobs:
           echo "::set-output name=path::$path"
 
       # 获取EpoxyHelper aar路径
-      - name: Get SwipeMenuLayout-EpoxyHelper aar path
+      - name: Get EpoxyHelper aar path
         id: EpoxyHelper-path
         run: |
           path=$(find SwipeMenuLayout-EpoxyHelper/build/outputs/aar -name '*release.aar' -type f | head -1)
