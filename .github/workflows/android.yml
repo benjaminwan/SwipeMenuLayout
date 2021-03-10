@@ -97,19 +97,20 @@ jobs:
         with:
           timeZone: 8
 
+      # 获取上次Tag
+      # https://github.com/marketplace/actions/previous-git-tag
+      - name: Previous Git Tag
+        id: git-previous-tag
+        uses: timfallmk/previous-git-tag-action@0.0.1
+
       # 获取git log 从 previousTag 到 lastTag
       - name: Get git log
         id: git-log
         run: |
-          previousTag=$(git describe --tags --abbrev=0 `git rev-list --tags --max-count=2` | sed -n 2p)
-          lastTag=$(git describe --tags --abbrev=0 `git rev-list --tags --max-count=2` | sed -n 1p)
-          echo "previousTag is $previousTag ~ lastTag is $lastTag"
-          if [[ $previousTag != '' ]] && [[ $lastTag != '' ]]
-          then
+          previousTag=${{ steps.git-previous-tag.outputs.PREVIOUS_TAG }}
+          lastTag=$(git describe --abbrev=0 --tags)
+          echo "previousTag:$previousTag ~ lastTag:$lastTag"
           log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
-          else if [[ $lastTag != '' ]]
-          log=$(git log $lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
-          fi
           echo "$log"
           echo "::set-output name=log::$log"
 
