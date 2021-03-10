@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     tags:
-      - '*'
+      - '*.*.*'
 
 jobs:
-  first-job:
+  build-and-release:
     runs-on: ubuntu-latest
     steps:
       # 检出代码
@@ -82,25 +82,31 @@ jobs:
           echo "::set-output name=path::$path"
 
       # 获取apk版本号
+      # https://github.com/marketplace/actions/apk-info-action
       - name: Get apk info
         id: apk-info
         uses: hkusu/apk-info-action@v1
         with:
           apk-path: ${{ steps.apk-path.outputs.path }}
 
-      #获取指定时区的时间
+      # 获取指定时区的时间
+      # https://github.com/marketplace/actions/get-time-action
       - name: Get Time
         id: time
         uses: JantHsueh/get-time-action@master
         with:
           timeZone: 8
 
-      #获取git log
+      # 获取git log 从 previousTag 到 lastTag
       - name: Get git log
-        id: git_log
-        uses: JantHsueh/get-git-log-action@master
-        with:
-          tag: release
+        id: git-log
+        run: |
+          previousTag=$(git tag | sed -n 'x;$p' )
+          lastTag=$(git tag | sed -n '$p' )
+          echo "previousTag is $previousTag ~ lastTag is $lastTag"
+          log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
+          echo "$log"
+          echo "::set-output name=log::log"
 
       # 显示信息
       - name: Show info
@@ -111,7 +117,8 @@ jobs:
           echo '${{ steps.SwipeMenuLayout-EpoxyHelper-path.outputs.path }}' # SwipeMenuLayout-EpoxyHelper aar路径
           echo '${{ steps.apk-path.outputs.path }}' # apk路径
           echo '${{ steps.apk-info.outputs.result }}' # get apk info success or failure
-          echo '${{ steps.time.outputs.result }}' # time
+          echo '${{ steps.time.outputs.time }}' # time
+          echo '${{ steps.git-log.outputs.log }}' # git log
           echo '${{ steps.apk-info.outputs.application-name }}'
           echo '${{ steps.apk-info.outputs.application-id }}'
           echo '${{ steps.apk-info.outputs.version-code }}'
@@ -127,10 +134,26 @@ jobs:
           echo '${{ steps.apk-info.outputs.readable-file-size }}'
 
       # 向钉钉发送消息
+      # https://github.com/marketplace/actions/web-request-action
       - name: dingtalk
-        uses: JantHsueh/webrequest-action@master
+        uses: satak/webrequest-action@master
         with:
           url: ${{ secrets.DINGTALK_WEBHOOK }}
           method: POST
-          payload: '{"msgtype": "text", "text": {"content": "版本更新: SwipeMenuLayout-版本号: ${{ steps.apk-info.outputs.version-name }} \n 距上个正式版的更新记录: \n${{ steps.git_log.outputs.log }}"}}'
+          payload: '{"msgtype": "text", "text": {"content": "版本更新: ${{ steps.apk-info.outputs.application-name }}-版本号: ${{ steps.apk-info.outputs.version-name }} \n 距上个正式版的更新记录: \n${{ steps.git_log.outputs.log }}"}}'
           headers: '{"Content-Type": "application/json"}'
+
+      # 创建Release
+      # https://github.com/marketplace/actions/gh-release
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          body: ${{ steps.git-log.outputs.log }}
+          files: |
+            ${{ steps.apk-path.outputs.path }} # apk路径
+            ${{ steps.SwipeMenuLayout-path.outputs.path }}  # SwipeMenuLayout aar路径
+            ${{ steps.SwipeMenuLayout-Helper-path.outputs.path }} # SwipeMenuLayout-Helper aar路径
+            ${{ steps.SwipeMenuLayout-EpoxyHelper-path.outputs.path }} # SwipeMenuLayout-EpoxyHelper aar路径
+        env:
+          GITHUB_TOKEN: ${{ secrets.RELEASE_ACCESS_TOKEN }}
