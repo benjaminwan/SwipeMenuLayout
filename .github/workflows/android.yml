@@ -107,7 +107,7 @@ jobs:
           previousTag=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
           lastTag=$(git describe --abbrev=0 --tags)
           echo "previousTag:$previousTag ~ lastTag:$lastTag"
-          log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an \n  %s\n \n' --date=format:'%Y-%m-%d %H:%M:%S')
+          log=$(git log $previousTag..$lastTag --pretty=format:'- %cd **%an**: %s' --date=format:'%Y-%m-%d %H:%M:%S')
           echo "$log"
           echo "::set-output name=log::$log"
 
@@ -143,7 +143,7 @@ jobs:
         with:
           url: ${{ secrets.DINGTALK_WEBHOOK }}
           method: POST
-          payload: '{"msgtype": "text", "text": {"content": "版本更新: ${{ steps.apk-info.outputs.application-name }}-版本号: ${{ steps.apk-info.outputs.version-name }} \n 距上个正式版的更新记录: \n${{ steps.git_log.outputs.log }}"}}'
+          payload: '{"msgtype": "text", "text": {"content": "版本更新: ${{ steps.apk-info.outputs.application-name }}-版本号: ${{ steps.apk-info.outputs.version-name }} \n 编译时间： ${{ steps.time.outputs.time }} \n 距上个正式版的更新记录: \n${{ steps.git-log.outputs.log }}"}}'
           headers: '{"Content-Type": "application/json"}'
 
       # 创建Release
