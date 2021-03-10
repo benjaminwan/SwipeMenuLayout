@@ -209,4 +209,12 @@ EpoxyMenuTouchHelper.initDragging(epoxyController)
             })
 ```
 
-#### 效果图
+#### 演示效果图
+##### 简单使用
+![avatar](demo_pictures/simple.gif)
+
+##### 在RecyclerView中使用
+![avatar](demo_pictures/recyclerview.gif)
+
+##### RecyclerView+types
+![avatar](demo_pictures/recyclerview_types.gif)
