@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.ItemTouchHelper;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.StaggeredGridLayoutManager;
 
+import com.benjaminwan.epoxyswipedemo.ui.adapter.TestAdapter;
 import com.benjaminwan.swipemenulayout.helper.MenuItemTouchHelper;
 
 public class MenuItemHelperCallBack extends MenuItemTouchHelper.Callback {
@@ -43,12 +44,16 @@ public class MenuItemHelperCallBack extends MenuItemTouchHelper.Callback {
         } else {
             dragFlags = ItemTouchHelper.UP | ItemTouchHelper.DOWN;
         }
+        if (viewHolder.getItemViewType() == TestAdapter.TYPE_HEADER) {
+            dragFlags = 0;
+        }
         return makeMovementFlags(dragFlags, 0);
     }
 
     @Override
     public void onSelectedChanged(@Nullable RecyclerView.ViewHolder viewHolder, int actionState) {
         super.onSelectedChanged(viewHolder, actionState);
+
         if (actionState == ItemTouchHelper.ACTION_STATE_DRAG && viewHolder != null) {
             View itemView = viewHolder.itemView;
             if (menuItemDragListener != null) {
@@ -90,6 +95,14 @@ public class MenuItemHelperCallBack extends MenuItemTouchHelper.Callback {
      */
     @Override
     public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int direction) {
+    }
+
+    @Override
+    public void clearView(@NonNull RecyclerView recyclerView, @NonNull RecyclerView.ViewHolder viewHolder) {
+        if (menuItemDragListener != null) {
+            menuItemDragListener.clearView(recyclerView, viewHolder);
+        }
+        super.clearView(recyclerView, viewHolder);
     }
 
     public void setOnItemDragListeber(MenuItemDragListener menuItemDragListener) {

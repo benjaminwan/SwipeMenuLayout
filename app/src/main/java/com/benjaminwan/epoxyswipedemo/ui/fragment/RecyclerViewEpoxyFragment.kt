@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -12,16 +13,13 @@ import com.benjaminwan.epoxyswipedemo.R
 import com.benjaminwan.epoxyswipedemo.databinding.FragmentRecyclerviewBinding
 import com.benjaminwan.epoxyswipedemo.itemviews.MenuDemoItemViewModel_
 import com.benjaminwan.epoxyswipedemo.itemviews.menuDemoItemView
+import com.benjaminwan.epoxyswipedemo.itemviews.testItemView
 import com.benjaminwan.epoxyswipedemo.menu.leftMenus
 import com.benjaminwan.epoxyswipedemo.menu.rightMenus
-import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemDragListener
-import com.benjaminwan.epoxyswipedemo.ui.callback.MenuItemHelperCallBack
 import com.benjaminwan.epoxyswipedemo.ui.viewmodel.RecyclerViewEpoxyViewModel
 import com.benjaminwan.epoxyswipedemo.utils.*
 import com.benjaminwan.swipemenulayout.SwipeMenuItem
 import com.benjaminwan.swipemenulayout.epoxyhelper.EpoxyMenuTouchHelper
-import com.benjaminwan.swipemenulayout.helper.MenuItemTouchHelper
-import com.orhanobut.logger.Logger
 
 class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
     Fragment(contentLayoutId), MavericksView {
@@ -49,6 +47,7 @@ class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
     private fun initViews() {
         binding.demoRv.setHasFixedSize(true)
         binding.demoRv.setItemDecoration(4, 4, 4, 4)
+        binding.demoRv.layoutManager = LinearLayoutManager(requireContext())
         binding.demoRv.setController(epoxyController)
         //拖拽事件(Drag and drop event)
         EpoxyMenuTouchHelper.initDragging(epoxyController)
@@ -65,7 +64,10 @@ class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
                     itemView: View?
                 ) {
                     withState(demoVM) {
-                        demoVM.swap(fromPosition, toPosition)
+                        val fromPos = fromPosition - 1
+                        val toPos = toPosition - 1
+                        if (fromPos in it.demos.indices && toPos in it.demos.indices)
+                            demoVM.swap(fromPos, toPos)
                     }
                 }
 
@@ -83,6 +85,10 @@ class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
                     super.onDragReleased(model, itemView)
                     objectAnimator?.cancel()
                 }
+
+                override fun clearView(model: MenuDemoItemViewModel_?, itemView: View?) {
+                    onDragReleased(model, itemView)
+                }
             })
     }
 
@@ -91,6 +97,10 @@ class RecyclerViewEpoxyFragment(@LayoutRes contentLayoutId: Int = R.layout.fragm
     }
 
     private fun epoxyController() = simpleController(demoVM) { state ->
+        testItemView {
+            id("header")
+            content("this is a header")
+        }
         state.demos.forEachIndexed { index, demo ->
             menuDemoItemView {
                 id("demo_${demo}}")

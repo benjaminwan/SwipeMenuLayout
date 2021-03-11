@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.airbnb.mvrx.MavericksView
 import com.airbnb.mvrx.activityViewModel
 import com.airbnb.mvrx.withState
@@ -16,9 +17,9 @@ import com.benjaminwan.epoxyswipedemo.itemviews.testItemView
 import com.benjaminwan.epoxyswipedemo.menu.leftMenus
 import com.benjaminwan.epoxyswipedemo.menu.rightMenus
 import com.benjaminwan.epoxyswipedemo.ui.viewmodel.RecyclerViewEpoxyViewModel
-import com.benjaminwan.swipemenulayout.epoxyhelper.EpoxyMenuTouchHelper
 import com.benjaminwan.epoxyswipedemo.utils.*
 import com.benjaminwan.swipemenulayout.SwipeMenuItem
+import com.benjaminwan.swipemenulayout.epoxyhelper.EpoxyMenuTouchHelper
 
 class RecyclerViewEpoxyTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.fragment_recyclerview) :
     Fragment(contentLayoutId), MavericksView {
@@ -47,6 +48,7 @@ class RecyclerViewEpoxyTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.
     private fun initViews() {
         binding.demoRv.setHasFixedSize(true)
         binding.demoRv.setItemDecoration(4, 4, 4, 4)
+        binding.demoRv.layoutManager = LinearLayoutManager(requireContext())
         binding.demoRv.setController(epoxyController)
         //拖拽事件(Drag and drop event)
         EpoxyMenuTouchHelper.initDragging(epoxyController)
@@ -85,6 +87,10 @@ class RecyclerViewEpoxyTypesFragment(@LayoutRes contentLayoutId: Int = R.layout.
                 override fun onDragReleased(model: MenuDemoItemViewModel_?, itemView: View?) {
                     super.onDragReleased(model, itemView)
                     objectAnimator?.cancel()
+                }
+
+                override fun clearView(model: MenuDemoItemViewModel_?, itemView: View?) {
+                    onDragReleased(model, itemView)
                 }
             })
     }

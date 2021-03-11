@@ -6,7 +6,7 @@ import android.view.View
 import androidx.annotation.LayoutRes
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.airbnb.mvrx.withState
+import androidx.recyclerview.widget.RecyclerView
 import com.benjaminwan.epoxyswipedemo.R
 import com.benjaminwan.epoxyswipedemo.app.App
 import com.benjaminwan.epoxyswipedemo.databinding.FragmentRecyclerviewBinding
@@ -37,7 +37,7 @@ class RecyclerViewAdapterFragment(@LayoutRes contentLayoutId: Int = R.layout.fra
                 MenuItemDragListener {
                 var objectAnimator: ObjectAnimator? = null
                 override fun onItemMoved(fromPosition: Int, toPosition: Int) {
-                    adapter.move(fromPosition,toPosition)
+                    adapter.move(fromPosition, toPosition)
                 }
 
                 override fun onDragStarted(itemView: View?, adapterPosition: Int) {
@@ -49,6 +49,13 @@ class RecyclerViewAdapterFragment(@LayoutRes contentLayoutId: Int = R.layout.fra
                 override fun onDragReleased() {
                     Logger.i("onDragReleased")
                     objectAnimator?.cancel()
+                }
+
+                override fun clearView(
+                    recyclerView: RecyclerView?,
+                    viewHolder: RecyclerView.ViewHolder?
+                ) {
+                    onDragReleased()
                 }
 
             })
