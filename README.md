@@ -223,3 +223,12 @@ EpoxyMenuTouchHelper.initDragging(epoxyController)
                 }
             })
 ```
+
+#### Other
+MenuItemTouchHelper directly copy-paste the code from ItemTouchHelper.
+
+When using drag-and-drop in RecyclerView, Dragging the 1st item causes fast scrolling.
+
+It leads to the fact that the 1st item can't be placed, for instance, to the 2nd position.
+
+It is recommended to replace the first item with a non-draggable view.

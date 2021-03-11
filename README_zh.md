@@ -224,3 +224,13 @@ EpoxyMenuTouchHelper.initDragging(epoxyController)
                 }
             })
 ```
+
+#### 其它
+MenuItemTouchHelper直接复制粘贴了ItemTouchHelper的代码。
+
+在RecyclerView中使用拖拽排序时，拖拽第一个item向下移动会导致快速向下滚动的问题。
+
+导致难以让第一个item移到第二的位置。
+
+所以建议在第一个item的位置以一个不可拖拽的view来代替。
+
