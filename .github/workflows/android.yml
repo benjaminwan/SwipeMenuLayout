@@ -107,9 +107,9 @@ jobs:
           previousTag=$(git describe --abbrev=0 --tags `git rev-list --tags --skip=1 --max-count=1`)
           lastTag=$(git describe --abbrev=0 --tags)
           echo "previousTag:$previousTag ~ lastTag:$lastTag"
-          log=$(git log $previousTag..$lastTag --pretty=format:'- %cd **%an**: %s' --date=format:'%Y-%m-%d %H:%M:%S')
+          log=$(git log $previousTag..$lastTag --pretty=format:'- %cd %an: %s\n' --date=format:'%Y-%m-%d %H:%M:%S')
           echo "$log"
-          echo "::set-output name=log::$log"
+          echo "::set-output name=log::"$log""
 
       # 显示信息
       - name: Show info
@@ -118,10 +118,10 @@ jobs:
           echo '${{ steps.Core-path.outputs.path }}' # Core aar路径
           echo '${{ steps.Helper-path.outputs.path }}' # Helper aar路径
           echo '${{ steps.EpoxyHelper-path.outputs.path }}' # EpoxyHelper aar路径
-          echo '${{ steps.apk-path.outputs.path }}' # apk路径
+          echo '${{ steps.apk-path.outputs.path }}'
           echo '${{ steps.apk-info.outputs.result }}' # get apk info success or failure
-          echo '${{ steps.time.outputs.time }}' # time
-          echo '${{ steps.git-log.outputs.log }}' # git log
+          echo '${{ steps.time.outputs.time }}'
+          echo '${{ steps.git-log.outputs.log }}'
           echo '${{ steps.apk-info.outputs.application-name }}'
           echo '${{ steps.apk-info.outputs.application-id }}'
           echo '${{ steps.apk-info.outputs.version-code }}'
@@ -146,13 +146,26 @@ jobs:
           payload: '{"msgtype": "text", "text": {"content": "版本更新: ${{ steps.apk-info.outputs.application-name }}-版本号: ${{ steps.apk-info.outputs.version-name }} \n 编译时间： ${{ steps.time.outputs.time }} \n 距上个正式版的更新记录: \n${{ steps.git-log.outputs.log }}"}}'
           headers: '{"Content-Type": "application/json"}'
 
-      # 创建Release
+      # 创建Changelog文件 triggered by git tag push,
+      - name: Generate Changelog
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+            echo -e '${{ steps.git-log.outputs.log }}' > Release.txt
+
+      # Cat Changelog triggered by git tag push
+      - name: Cat Changelog
+        if: startsWith(github.ref, 'refs/tags/')
+        run: |
+            cat Release.txt
+
+      # 创建Release triggered by git tag push,
       # https://github.com/marketplace/actions/gh-release
       - name: Release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/')
         with:
-          body: ${{ steps.git-log.outputs.log }}
+          body_path: Release.txt
+          draft: true
           files: |
             ${{ steps.apk-path.outputs.path }}
             ${{ steps.Core-path.outputs.path }}

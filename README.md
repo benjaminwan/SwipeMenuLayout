@@ -7,10 +7,10 @@
 
 ### Introduction
 SwipeMenuLayout is an Android side-sliding menu widget.
+
 It supports swipe left (right menu) or swipe right (left menu), and can be used in RecyclerView, support long press drag and drop.
-demo implementation: Kotlin+epoxy+Mavericks
-[Mavericks](https://github.com/airbnb/mavericks)
-[epoxy](https://github.com/airbnb/epoxy)
+
+demo implementation: Kotlin + [epoxy](https://github.com/airbnb/epoxy) + [Mavericks](https://github.com/airbnb/mavericks)
 
 #### Demo Picture
 ##### Simple example
@@ -36,12 +36,13 @@ repositories {
 3. RecyclerView+Epoxy，dependency: All
 ```groovy
 dependencies {
+    def swipe_version = "1.0.3"
     //Widget
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:$swipe_version"
     //Adapter Helper
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Helper:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Helper:$swipe_version"
     //Epoxy Helper
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-EpoxyHelper:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-EpoxyHelper:$swipe_version"
 }
 ```
 

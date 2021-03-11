@@ -7,10 +7,10 @@
 
 ### 介绍
 SwipeMenuLayout是一个Android侧滑菜单控件。
+
 支持向左滑动(右侧菜单)或向右滑动(左侧菜单)，并可用于RecyclerView，支持长按拖拽排序。
-demo实现：Kotlin+epoxy+Mavericks
-[Mavericks](https://github.com/airbnb/mavericks)
-[epoxy](https://github.com/airbnb/epoxy)
+
+demo实现：Kotlin + [epoxy](https://github.com/airbnb/epoxy) + [Mavericks](https://github.com/airbnb/mavericks)
 
 #### 演示效果图
 ##### 单独使用
@@ -36,12 +36,13 @@ repositories {
 3. 在RecyclerView+Epoxy中使用时，需要全部3个
 ```groovy
 dependencies {
+    def swipe_version = "1.0.3"
     //Widget
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:$swipe_version"
     //Adapter Helper
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Helper:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Helper:$swipe_version"
     //Epoxy Helper
-    implementation 'com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-EpoxyHelper:1.0.2'
+    implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-EpoxyHelper:$swipe_version"
 }
 ```
 
