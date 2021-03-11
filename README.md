@@ -3,17 +3,17 @@
 [![Issue](https://img.shields.io/github/issues/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout/issues)
 [![Star](https://img.shields.io/github/stars/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout)
 
-## [英文](./README.md) | [中文](./README_zh.md)
+## [English](./README.md) | [Chinese](./README_zh.md)
 
-### 介绍
-SwipeMenuLayout是一个Android侧滑菜单控件。
-支持向左滑动(右侧菜单)或向右滑动(左侧菜单)，并可用于RecyclerView，支持长按拖拽排序。
-demo实现：Kotlin+epoxy+Mavericks
+### Introduction
+SwipeMenuLayout is an Android side-sliding menu widget.
+It supports swipe left (right menu) or swipe right (left menu), and can be used in RecyclerView, support long press drag and drop.
+demo implementation: Kotlin+epoxy+Mavericks
 [Mavericks](https://github.com/airbnb/mavericks)
 [epoxy](https://github.com/airbnb/epoxy)
 
-#### 演示效果图
-##### 单独使用
+#### Demo Picture
+##### Simple example
 ![avatar](demo_pictures/simple.gif)
 
 ##### RecyclerView+Adapter
@@ -22,8 +22,8 @@ demo实现：Kotlin+epoxy+Mavericks
 ##### RecyclerView+epoxy+types
 ![avatar](demo_pictures/recyclerview_types.gif)
 
-### 安装
-0. root build.gradle添加
+### Installation
+0. root build.gradle add
 ```groovy
 repositories {
         google()
@@ -31,9 +31,9 @@ repositories {
         maven { url "https://jitpack.io" }
     }
 ```
-1. 单独使用控件，仅需要Core
-2. 在RecyclerView+Adapter中使用时，需要Core和Helper
-3. 在RecyclerView+Epoxy中使用时，需要全部3个
+1. Simple example, dependency: Core
+2. RecyclerView+Adapter，dependency:Core and Helper
+3. RecyclerView+Epoxy，dependency: All
 ```groovy
 dependencies {
     //Widget
@@ -45,11 +45,11 @@ dependencies {
 }
 ```
 
-### 使用说明
+### Instructions
 
-#### 在Layout中定义
-SwipeMenuLayout下的第一个View默认成为contentView。
-也可以通过app:contentView="@id/contentLayout"指定contentView
+#### Define in Layout.xml
+The first View under SwipeMenuLayout becomes the contentView by default.
+You can also specify the contentView by app:contentView="@id/contentLayout"
 ```xml
 <com.benjaminwan.swipemenulayout.SwipeMenuLayout
     android:id="@+id/swipeLayout"
@@ -66,10 +66,10 @@ SwipeMenuLayout下的第一个View默认成为contentView。
 </com.benjaminwan.swipemenulayout.SwipeMenuLayout>
 ```
 
-#### 定义菜单
-两种方法二选一
+#### Define Menu in kt file or class
+Choose one of two methods
 ```kotlin
-//1. 使用DSL
+//1. Use DSL
 val leftMenus: List<SwipeMenuItem> =
     menuItems {
         menuItem {
@@ -95,7 +95,7 @@ val leftMenus: List<SwipeMenuItem> =
             iconColorRes = R.color.selector_white_to_grey5
         }
     }
-//2. 或者Builder
+//2. Use Builder
 val rightMenus: List<SwipeMenuItem> =
     listOf(
         SwipeMenuItem.Builder()
@@ -122,26 +122,25 @@ val rightMenus: List<SwipeMenuItem> =
             .build()
     )
 ```
-#### 添加菜单
-菜单View是SwipeMenuLayout的成员：leftMenuView、rightMenuView
+#### Create Menu 
 ```kotlin
 swipeLayout.leftMenuView.createMenu(leftMenus)
 swipeLayout.rightMenuView.createMenu(rightMenus)
 ```
 
-#### 清除菜单
+#### clear Menu
 ```kotlin
 swipeLayout.leftMenuView.removeAllViews()
 swipeLayout.rightMenuView.removeAllViews()
 ```
 
-#### 左右滑动使能
+#### Control Slide left or right
 ```kotlin
 swipeLayout.leftMenuEnable = true
 swipeLayout.rightMenuEnable = true
 ```
 
-#### 菜单打开关闭事件
+#### Menu open-close event
 ```kotlin
 swipeLayout.addOnMenuClosedListener {
     //...
@@ -154,7 +153,7 @@ swipeLayout.addOnRightMenuOpenListener {
 }
 ```
 
-#### 菜单项点击事件
+#### Menu item click events
 ```kotlin
 swipeLayout.leftMenuView.setOnMenuItemClickListener {
     //...
@@ -164,7 +163,7 @@ swipeLayout.rightMenuView.setOnMenuItemClickListener {
 }
 ```
 
-#### RecyclerView+Adapter拖拽排序
+#### RecyclerView+Adapter Drag and drop
 ```kotlin
 val itemTouchHelper = MenuItemTouchHelper(
         MenuItemHelperCallBack(
@@ -188,7 +187,7 @@ val itemTouchHelper = MenuItemTouchHelper(
     )
 itemTouchHelper.attachToRecyclerView(recyclerView)
 ```
-#### RecyclerView+Epoxy拖拽排序
+#### RecyclerView+Epoxy Drag and drop
 ```kotlin
 EpoxyMenuTouchHelper.initDragging(epoxyController)
             .withRecyclerView(binding.demoRv)
