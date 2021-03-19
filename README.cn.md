@@ -3,7 +3,7 @@
 [![Issue](https://img.shields.io/github/issues/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout/issues)
 [![Star](https://img.shields.io/github/stars/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout)
 
-## [英文](./README.md) | [中文](./README_zh.md)
+## [英文](./README.md) | [中文](./README.cn.md)
 
 ### 介绍
 SwipeMenuLayout是一个Android侧滑菜单控件。
@@ -36,7 +36,7 @@ repositories {
 3. 在RecyclerView+Epoxy中使用时，需要全部3个
 ```groovy
 dependencies {
-    def swipe_version = "1.0.3"
+    def swipe_version = "1.0.5"
     //Widget
     implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:$swipe_version"
     //Adapter Helper

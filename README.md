@@ -3,7 +3,7 @@
 [![Issue](https://img.shields.io/github/issues/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout/issues)
 [![Star](https://img.shields.io/github/stars/benjaminwan/SwipeMenuLayout.svg)](https://github.com/benjaminwan/SwipeMenuLayout)
 
-## [English](./README.md) | [Chinese](./README_zh.md)
+## [English](./README.md) | [Chinese](README.cn.md)
 
 ### Introduction
 SwipeMenuLayout is an Android side-sliding menu widget.
@@ -36,7 +36,7 @@ repositories {
 3. RecyclerView+Epoxy，dependency: All
 ```groovy
 dependencies {
-    def swipe_version = "1.0.3"
+    def swipe_version = "1.0.5"
     //Widget
     implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:$swipe_version"
     //Adapter Helper
