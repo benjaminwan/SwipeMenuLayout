@@ -1,10 +1,18 @@
 plugins {
     id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-//    id 'com.github.dcendents.android-maven'
+    id 'maven-publish'
 }
 
-group="com.github.benjaminwan"
+project.afterEvaluate {
+    publishing {
+        publications {
+            release(MavenPublication) {
+                from components.release
+            }
+        }
+    }
+}
 
 android {
     namespace 'com.benjaminwan.swipemenulayout'
