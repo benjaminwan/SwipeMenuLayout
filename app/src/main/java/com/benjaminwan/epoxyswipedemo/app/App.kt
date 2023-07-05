@@ -3,7 +3,6 @@ package com.benjaminwan.epoxyswipedemo.app
 import android.app.Application
 import android.util.Log
 import com.airbnb.mvrx.Mavericks
-import com.benjaminwan.epoxyswipedemo.BuildConfig
 import com.orhanobut.logger.AndroidLogAdapter
 import com.orhanobut.logger.LogStrategy
 import com.orhanobut.logger.Logger
@@ -28,7 +27,7 @@ class App : Application() {
             .logStrategy(LogCatStrategy())
             .build()
         Logger.addLogAdapter(object : AndroidLogAdapter(formatStrategy) {
-            override fun isLoggable(priority: Int, tag: String?): Boolean = BuildConfig.DEBUG
+            override fun isLoggable(priority: Int, tag: String?): Boolean = true
         })
     }
 

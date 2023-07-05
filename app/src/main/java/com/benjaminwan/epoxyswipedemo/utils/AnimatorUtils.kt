@@ -96,7 +96,7 @@ fun View.shakeInfinite(): ObjectAnimator {
     animator.repeatCount = ValueAnimator.INFINITE
     animator.start()
     animator.addListener(object : AnimatorListenerAdapter() {
-        override fun onAnimationEnd(animation: Animator?) {
+        override fun onAnimationEnd(animation: Animator) {
             super.onAnimationEnd(animation)
             this@shakeInfinite.scaleX = scaleX
             this@shakeInfinite.scaleY = scaleY
