@@ -4,11 +4,14 @@ plugins {
     id 'maven-publish'
 }
 
-project.afterEvaluate {
+afterEvaluate {
     publishing {
         publications {
             release(MavenPublication) {
                 from components.release
+                groupId = 'com.github.benjaminwan'
+                artifactId = 'SwipeMenuLayout-Core'
+                version = project_version_name
             }
         }
     }

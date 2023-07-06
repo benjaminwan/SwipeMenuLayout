@@ -9,6 +9,9 @@ project.afterEvaluate {
         publications {
             release(MavenPublication) {
                 from components.release
+                groupId = 'com.github.benjaminwan'
+                artifactId = 'SwipeMenuLayout-Helper'
+                version = project_version_name
             }
         }
     }

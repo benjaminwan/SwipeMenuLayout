@@ -1,7 +1,2 @@
 jdk:
   - openjdk17
-
-install:
-  - ./gradlew build :SwipeMenuLayout-Core:publishToMavenLocal
-  - ./gradlew build :SwipeMenuLayout-Helper:publishToMavenLocal
-  - ./gradlew build :SwipeMenuLayout-EpoxyHelper:publishToMavenLocal
