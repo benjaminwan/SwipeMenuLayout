@@ -8,8 +8,8 @@ buildscript {
         compile_sdk_version = 33
         min_sdk_version = 21
         target_sdk_version = 33
-        project_version_code = 9
-        project_version_name = "1.1.0"
+        project_version_code = 10
+        project_version_name = "1.1.1"
     }
 }
 

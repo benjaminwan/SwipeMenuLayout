@@ -36,7 +36,7 @@ repositories {
 3. RecyclerView+Epoxy，dependency: All
 ```groovy
 dependencies {
-    def swipe_version = "1.1.0"
+    def swipe_version = "1.1.1"
     //Widget
     implementation "com.github.benjaminwan.SwipeMenuLayout:SwipeMenuLayout-Core:$swipe_version"
     //Adapter Helper
